@@ -8,3 +8,27 @@ from models.text_to_image_fast import TextToImageAdapterFast as TextToImageAdapt
 
 class AppController(LoggingMixin, ConfigurableMixin):
     """Main application controller - demonstrates multiple inheritance"""
+
+    def __init__(self, view):
+        # Initialize all parent classes properly
+        LoggingMixin.__init__(self)
+        ConfigurableMixin.__init__(self)
+        self.view = view
+        self.val = None
+
+        # Initialize models - demonstrates polymorphism
+        self.text_sentiment_m = TextSentimentAdapter()
+        self.img_classifier_m = ImageClassifierAdapter()
+        self.text_to_image_m = TextToImageAdapter()
+        
+        self.models = {
+            'Text Sentiment Analysis': self.text_sentiment_m, 
+            'Image Classification': self.img_classifier_m,
+            'Text-to-Image Generation': self.text_to_image_m
+        }
+
+        # Populate the GUI with available models
+        self.view.populate_models(list(self.models.keys()))
+        self.view.on_run_clicked(self.run_async)
+        
+        self._logger("Controller initialized with Text Sentiment, Image Classification, and Text-to-Image models")
