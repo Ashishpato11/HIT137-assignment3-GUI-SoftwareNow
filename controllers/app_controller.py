@@ -32,3 +32,13 @@ class AppController(LoggingMixin, ConfigurableMixin):
         self.view.on_run_clicked(self.run_async)
         
         self._logger("Controller initialized with Text Sentiment, Image Classification, and Text-to-Image models")
+
+        def set_text_input(self, t):
+        self.val = t
+
+        @log_action()
+        @timing_decorator
+        @error_handler
+        def run(self, model_name):
+            """Run the selected model - demonstrates polymorphism through different model types"""
+            self._logger(f"Running model: {model_name}")
