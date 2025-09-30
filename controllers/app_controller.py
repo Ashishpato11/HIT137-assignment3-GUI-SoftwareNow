@@ -42,3 +42,27 @@ class AppController(LoggingMixin, ConfigurableMixin):
         def run(self, model_name):
             """Run the selected model - demonstrates polymorphism through different model types"""
             self._logger(f"Running model: {model_name}")
+
+        # Get the appropriate model - demonstrates polymorphism
+        model = self.models.get(model_name)
+        if not model:
+            self.view.render_output(f"Error: Model '{model_name}' not found")
+            return
+        
+         # Load the model
+        self._logger(f"Loading model: {model_name}")
+        model.load()
+        
+         # Get input based on model type and user selection
+        input_data = self._get_input_data(model_name)
+        if not input_data:
+            return
+        
+        # Make prediction - all models implement predict() differently (polymorphism)
+        self._logger(f"Making prediction with input data")
+        result = model.predict(input_data)
+        
+        # Format and display result
+        formatted_result = self.format_result(result, model_name)
+        self.view.render_output(formatted_result)
+        self._logger("Prediction completed successfully")
