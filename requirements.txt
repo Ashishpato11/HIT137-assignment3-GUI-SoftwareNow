@@ -1,0 +1,17 @@
+
+# Core dependencies for Hugging Face models and Diffusers
+
+# Diffusion pipelines for text-to-image generation
+diffusers==0.29.2
+
+# Hugging Face Transformers library for NLP and vision models
+transformers==4.44.2
+
+# PyTorch (backend for deep learning)
+torch==2.4.1
+
+# Image processing library
+Pillow==10.4.0
+
+# Efficient model training and inference utilities
+accelerate==0.34.2
