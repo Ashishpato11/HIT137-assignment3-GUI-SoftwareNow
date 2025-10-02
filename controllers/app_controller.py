@@ -79,3 +79,27 @@ class AppController(LoggingMixin, ConfigurableMixin):
             return input_data
         
         elif input_type == "Image":
+          # Use file input
+            input_data = self.view.get_selected_file()
+            if not input_data or not os.path.exists(input_data):
+                self.view.render_output("Error: Please select a valid image file")
+                return None
+            return input_data
+        
+        else:
+            self.view.render_output("Error: Please select appropriate input type")
+            return None
+
+    def format_result(self, result, model_name):
+        """Format the prediction result for display - demonstrates method overriding concept"""
+        if isinstance(result, dict):
+            if 'label' in result and 'confidence' in result:
+                return f"Model: {model_name}\n\nPrediction: {result['label']}\nConfidence: {result['confidence']}\nTask: {result.get('task', 'Unknown')}"
+            elif 'status' in result:
+                if result['status'] == 'error':
+                    return f"Model: {model_name}\n\nError: {result.get('message', 'Unknown error')}"
+                elif result['status'] == 'success' and 'image_path' in result:
+                      # sachin do this remaing part
+                    # Handle image generation results and open folder
+                     # Open folder and select the file
+                  
