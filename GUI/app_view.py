@@ -173,5 +173,9 @@ Method overriding (info(), preprocess_data()), and Encapsulation (private attrib
 Models: HuggingFace Transformers for NLP and Vision tasks."""
         tk.Label(notes_frame, text=notes_text, bg='#f0f0f0', 
                 font=('Arial', 8), wraplength=600).pack(anchor=tk.W)
-    
+    def populate_models(self, n): 
+        self.model_combo['values'] = n
+        if n:
+            self.model_var.set(n[0])
+            self.update_model_info(n[0])  # Update info for the first model
         
