@@ -50,3 +50,17 @@ def error_handler(func):
             # Return error result instead of crashing
             return {'status': 'error', 'message': error_msg}
     return wrapper
+
+def validate_input(input_type=None):
+    """Decorator to validate input parameters"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, data, *args, **kwargs):
+            if input_type == 'text' and not isinstance(data, str):
+                raise ValueError("Input must be a string for text processing")
+            elif input_type == 'file' and not data:
+                raise ValueError("Input file path cannot be empty")
+            
+            return func(self, data, *args, **kwargs)
+        return wrapper
+    return decorator
