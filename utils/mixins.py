@@ -40,3 +40,28 @@ class ValidatorMixin:
         if not os.path.exists(file_path):
             raise ValueError(f"File does not exist: {file_path}")
         return file_path
+    
+class ConfigurableMixin:
+    """Mixin class for configuration management - demonstrates encapsulation"""
+    def __init__(self, *a, **k):
+        super().__init__(*a, **k)
+        self.__config = {
+            'max_retries': 3,
+            'timeout': 30,
+            'debug_mode': False
+        }
+    
+    def get_config(self, key):
+        """Get configuration value - demonstrates encapsulation"""
+        return self.__config.get(key)
+    
+    def set_config(self, key, value):
+        """Set configuration value - demonstrates encapsulation"""
+        if key in self.__config:
+            self.__config[key] = value
+        else:
+            raise KeyError(f"Configuration key '{key}' not found")
+    
+    def get_all_config(self):
+        """Get all configuration values"""
+        return self.__config.copy()
