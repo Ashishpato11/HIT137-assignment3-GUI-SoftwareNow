@@ -21,3 +21,114 @@ class AppView(tk.Tk):
         # Create main interface
         self.create_interface()
         
+     def create_menu(self):
+        menubar = tk.Menu(self)
+        self.config(menu=menubar)
+        
+        # File menu
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="New")
+        file_menu.add_command(label="Open")
+        file_menu.add_command(label="Save")
+        file_menu.add_separator()
+        file_menu.add_command(label="Exit", command=self.quit)
+        
+        # Models menu
+        models_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Models", menu=models_menu)
+        models_menu.add_command(label="Load Model")
+        models_menu.add_command(label="Model Info")
+        
+        # Help menu
+        help_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label="About")
+        
+    def create_interface(self):
+        # Main container
+        main_frame = tk.Frame(self, bg='#f0f0f0')
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        
+        # Top section - Model Selection
+        top_frame = tk.Frame(main_frame, bg='#f0f0f0')
+        top_frame.pack(fill=tk.X, pady=5)
+        
+        tk.Label(top_frame, text="Model Selection:", bg='#f0f0f0', font=('Arial', 10)).pack(side=tk.LEFT)
+        
+        self.model_combo = ttk.Combobox(top_frame, textvariable=self.model_var, state="readonly", width=20)
+        self.model_combo.pack(side=tk.LEFT, padx=(10, 10))
+        self.model_combo.bind('<<ComboboxSelected>>', self.on_model_changed)
+        
+        self.load_model_btn = tk.Button(top_frame, text="Load Model", bg='#e0e0e0')
+        self.load_model_btn.pack(side=tk.LEFT)
+        
+        # Middle section - Input and Output
+        middle_frame = tk.Frame(main_frame, bg='#f0f0f0')
+        middle_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        
+        # Left side - User Input Section
+        left_frame = tk.LabelFrame(middle_frame, text="User Input Section", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+        
+        # Radio buttons for input type
+        radio_frame = tk.Frame(left_frame, bg='#f0f0f0')
+        radio_frame.pack(fill=tk.X, pady=5)
+        
+        self.text_radio = tk.Radiobutton(radio_frame, text="Text", variable=self.input_type_var, 
+                                        value="Text", bg='#f0f0f0', command=self.on_input_type_change)
+        self.text_radio.pack(side=tk.LEFT)
+        
+        self.image_radio = tk.Radiobutton(radio_frame, text="Image", variable=self.input_type_var, 
+                                         value="Image", bg='#f0f0f0', command=self.on_input_type_change)
+        self.image_radio.pack(side=tk.LEFT, padx=(10, 0))
+        
+        self.browse_btn = tk.Button(radio_frame, text="Browse", command=self.browse_file, bg='#e0e0e0')
+        self.browse_btn.pack(side=tk.RIGHT)
+        
+        # Input area
+        self.text_entry = tk.Text(left_frame, height=10, width=30)
+        self.text_entry.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Right side - Model Output Section
+        right_frame = tk.LabelFrame(middle_frame, text="Model Output Section", bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
+        
+        tk.Label(right_frame, text="Output Display:", bg='#f0f0f0').pack(anchor=tk.W, pady=(5, 0))
+        
+        self.out = tk.Text(right_frame, height=10, width=30)
+        self.out.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Initialize with welcome message
+        self.out.insert(tk.END, "Model: Text\nResult:\nReady to process input...")
+        
+        # Button section
+        button_frame = tk.Frame(main_frame, bg='#f0f0f0')
+        button_frame.pack(fill=tk.X, pady=5)
+        
+        self.run_btn1 = tk.Button(button_frame, text="Run Model 1", command=lambda: self._on_run("Text Sentiment Analysis"), 
+                                 bg='#d0d0d0', width=15)
+        self.run_btn1.pack(side=tk.LEFT, padx=2)
+
+        self.run_btn2 = tk.Button(button_frame, text="Run Model 2", command=lambda: self._on_run("Image Classification"), 
+                                 bg='#d0d0d0', width=15)
+        self.run_btn2.pack(side=tk.LEFT, padx=2)
+        
+        self.run_btn3 = tk.Button(button_frame, text="Run Model 3", command=lambda: self._on_run("Text-to-Image Generation"), 
+                                 bg='#d0d0d0', width=15)
+        self.run_btn3.pack(side=tk.LEFT, padx=2)
+
+        self.clear_btn = tk.Button(button_frame, text="Clear", command=self.clear_output, 
+                                  bg='#d0d0d0', width=12)
+        self.clear_btn.pack(side=tk.LEFT, padx=2)
+        
+        self.open_images_btn = tk.Button(button_frame, text="Open Images", command=self.open_images_folder, 
+                                        bg='#d0d0d0', width=12)
+        self.open_images_btn.pack(side=tk.LEFT, padx=2)        # Bottom section - Model Information
+        bottom_frame = tk.LabelFrame(main_frame, text="Model Information & Explanation", 
+                                   bg='#f0f0f0', font=('Arial', 10, 'bold'))
+        bottom_frame.pack(fill=tk.X, pady=(10, 5))
+        
+        info_container = tk.Frame(bottom_frame, bg='#f0f0f0')
+        info_container.pack(fill=tk.X, padx=5, pady=5)
+        
