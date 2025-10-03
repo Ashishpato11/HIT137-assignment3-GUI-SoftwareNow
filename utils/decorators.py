@@ -31,3 +31,22 @@ def timing_decorator(func):
         
         return result
     return wrapper
+
+def error_handler(func):
+    """Decorator to handle errors gracefully"""
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return func(self, *args, **kwargs)
+        except Exception as e:
+            error_msg = f'Error in {self.__class__.__name__}.{func.__name__}: {str(e)}'
+            
+            # Log error if logger exists
+            if hasattr(self, '_logger'):
+                self._logger(f'[ERROR] {error_msg}')
+            else:
+                print(f'[ERROR] {error_msg}')
+            
+            # Return error result instead of crashing
+            return {'status': 'error', 'message': error_msg}
+    return wrapper
