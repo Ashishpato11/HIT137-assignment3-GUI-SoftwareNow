@@ -99,7 +99,33 @@ class AppController(LoggingMixin, ConfigurableMixin):
                 if result['status'] == 'error':
                     return f"Model: {model_name}\n\nError: {result.get('message', 'Unknown error')}"
                 elif result['status'] == 'success' and 'image_path' in result:
-                      # sachin do this remaing part
                     # Handle image generation results and open folder
-                     # Open folder and select the file
+                    self._open_images_folder(result['image_path'])
+                    return f"Model: {model_name}\n\n SUCCESS: AI Image Generated!\n\n Saved to: {result['image_path']}\n\n Prompt: {result.get('prompt', 'N/A')}\n\n This is a REAL AI-generated robot chess image!\n\n The images folder has been opened for you to view the result."
+                else:
+                    return f"Model: {model_name}\n\nResult: {result.get('message', str(result))}"
+        
+        return f"Model: {model_name}\n\nResult:\n{str(result)}"
+    def run_async(self, model_name):
+        """Run prediction in a separate thread to prevent GUI freezing"""
+        threading.Thread(target=self.run, args=(model_name,), daemon=True).start()
+
+    def _open_images_folder(self, image_path):
+        """Open the folder containing the generated image"""
+        try:
+            import subprocess
+            import platform
+            
+            folder_path = os.path.dirname(image_path)
+            
+            if platform.system() == "Windows":
+                # Open folder and select the file
+                subprocess.run(['explorer', '/select,', image_path], check=False)
+            elif platform.system() == "Darwin":  # macOS
+                subprocess.run(['open', '-R', image_path], check=False)
+            else:  # Linux
+                subprocess.run(['xdg-open', folder_path], check=False)
+                
+        except Exception as e:
+            self._logger(f"Could not open images folder: {e}")
                   
