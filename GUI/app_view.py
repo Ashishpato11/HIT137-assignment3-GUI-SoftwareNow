@@ -179,3 +179,14 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
             self.model_var.set(n[0])
             self.update_model_info(n[0])  # Update info for the first model
         
+    def on_run_clicked(self, h): 
+        self._run = h
+    
+    def get_text_input(self): 
+        return self.text_entry.get('1.0', tk.END).strip()
+    
+    def get_selected_file(self):
+        return self.selected_file_path
+    
+    def get_input_type(self):
+        return self.input_type_var.get()
