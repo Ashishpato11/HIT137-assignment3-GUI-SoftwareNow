@@ -275,3 +275,26 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
             info_text = "• Select a model to see details"
         
         self.model_info_label.config(text=info_text)
+        
+    def open_images_folder(self):
+        """Open the generated images folder"""
+        import os
+        import subprocess
+        
+        folder_path = os.path.abspath("generated_images")
+        
+        # Create folder if it doesn't exist
+        os.makedirs(folder_path, exist_ok=True)
+        
+        try:
+            # Open folder in Windows Explorer
+            subprocess.Popen(f'explorer "{folder_path}"')
+        except Exception as e:
+            # Fallback: show path in output
+            self.render_output(f"Generated images folder: {folder_path}\nError opening folder: {e}")
+    
+    def _on_run(self, model_type=None):
+        if self._run: 
+            # Use the model_type parameter if provided, otherwise use the selected model
+            selected_model = model_type if model_type else self.model_var.get()
+            self._run(selected_model)
