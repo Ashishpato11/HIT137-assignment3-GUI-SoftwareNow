@@ -250,3 +250,28 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
         """Update model information when model selection changes"""
         selected_model = self.model_var.get()
         self.update_model_info(selected_model)
+        
+    def update_model_info(self, model_name):
+        """Update the model information display"""
+        if model_name == "Text Sentiment Analysis":
+            info_text = """• Model Name: DistilBERT
+• Category: Text, NLP
+• Short Description: Sentiment analysis model
+• Input: Text data
+• Output: Positive/Negative sentiment"""
+        elif model_name == "Image Classification":
+            info_text = """• Model Name: Vision Transformer
+• Category: Vision, Classification  
+• Short Description: Image classification model
+• Input: Image files (JPG, PNG)
+• Output: Object class labels"""
+        elif model_name == "Text-to-Image Generation":
+            info_text = """• Model Name: Stable Diffusion
+• Category: Text-to-Image, Generative
+• Short Description: Generate images from text
+• Input: Text descriptions
+• Output: Generated images"""
+        else:
+            info_text = "• Select a model to see details"
+        
+        self.model_info_label.config(text=info_text)
