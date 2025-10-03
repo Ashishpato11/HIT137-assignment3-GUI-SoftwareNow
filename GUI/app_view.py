@@ -216,3 +216,7 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
         else:
             # Display text result
             self.out.insert(tk.END, str(r))
+            
+    def clear_output(self):
+        self.out.delete('1.0', tk.END)
+        self.text_entry.delete('1.0', tk.END)
