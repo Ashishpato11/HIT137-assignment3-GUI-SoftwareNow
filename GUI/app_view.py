@@ -238,3 +238,15 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
             # Show file name in text area for reference
             self.text_entry.delete('1.0', tk.END)
             self.text_entry.insert('1.0', f"Selected file: {filename}")
+            
+    def on_input_type_change(self):
+        input_type = self.input_type_var.get()
+        if input_type == "Image":
+            self.browse_btn.config(state='normal')
+        else:
+            self.browse_btn.config(state='normal')  # Keep browse enabled for text files too
+    
+    def on_model_changed(self, event=None):
+        """Update model information when model selection changes"""
+        selected_model = self.model_var.get()
+        self.update_model_info(selected_model)
