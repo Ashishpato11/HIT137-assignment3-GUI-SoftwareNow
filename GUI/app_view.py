@@ -220,3 +220,21 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
     def clear_output(self):
         self.out.delete('1.0', tk.END)
         self.text_entry.delete('1.0', tk.END)
+        
+    def browse_file(self):
+        file_types = [
+            ('Image files', '*.png *.jpg *.jpeg *.gif *.bmp'),
+            ('Text files', '*.txt'),
+            ('All files', '*.*')
+        ]
+        
+        filename = filedialog.askopenfilename(
+            title="Select a file",
+            filetypes=file_types
+        )
+        
+        if filename:
+            self.selected_file_path = filename
+            # Show file name in text area for reference
+            self.text_entry.delete('1.0', tk.END)
+            self.text_entry.insert('1.0', f"Selected file: {filename}")
