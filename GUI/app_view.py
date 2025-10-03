@@ -132,3 +132,46 @@ class AppView(tk.Tk):
         info_container = tk.Frame(bottom_frame, bg='#f0f0f0')
         info_container.pack(fill=tk.X, padx=5, pady=5)
         
+        # Left column - Selected Model Info
+        left_info = tk.Frame(info_container, bg='#f0f0f0')
+        left_info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        tk.Label(left_info, text="Selected Model Info:", bg='#f0f0f0', font=('Arial', 9, 'bold')).pack(anchor=tk.W)
+        
+        # Dynamic model info that will be updated
+        self.model_info_label = tk.Label(left_info, text="• Select a model to see details", 
+                                        bg='#f0f0f0', justify=tk.LEFT, font=('Arial', 9))
+        self.model_info_label.pack(anchor=tk.W, pady=(5, 0))
+        
+        # Right column - OOP Concepts
+        right_info = tk.Frame(info_container, bg='#f0f0f0')
+        right_info.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+        tk.Label(right_info, text="OOP Concepts Explanation:", bg='#f0f0f0', font=('Arial', 9, 'bold')).pack(anchor=tk.W)
+        
+        oop_text = """• Multiple Inheritance: Models inherit from 
+  BaseModelAdapter + LoggingMixin + ValidatorMixin
+• Polymorphism: All models implement predict() 
+  differently but share same interface
+• Method Overriding: Models override info(), 
+  preprocess_data(), postprocess_result()
+• Encapsulation: Private attributes (__mid, __task) 
+  accessed via properties
+• Multiple Decorators: @log_action, @timing_decorator, 
+  @error_handler, @validate_input applied together"""
+        
+        tk.Label(right_info, text=oop_text, bg='#f0f0f0', justify=tk.LEFT, font=('Arial', 8)).pack(anchor=tk.W, pady=(5, 0))
+        
+        # Notes section
+        notes_frame = tk.Frame(main_frame, bg='#f0f0f0')
+        notes_frame.pack(fill=tk.X, pady=(5, 0))
+        
+        tk.Label(notes_frame, text="Notes", bg='#f0f0f0', font=('Arial', 10, 'bold')).pack(anchor=tk.W)
+        notes_text = """This GUI demonstrates advanced OOP concepts: Multiple inheritance (3+ mixins), 
+Multiple decorators (4 types), Polymorphism (different predict() implementations), 
+Method overriding (info(), preprocess_data()), and Encapsulation (private attributes with properties).
+Models: HuggingFace Transformers for NLP and Vision tasks."""
+        tk.Label(notes_frame, text=notes_text, bg='#f0f0f0', 
+                font=('Arial', 8), wraplength=600).pack(anchor=tk.W)
+    
+        
