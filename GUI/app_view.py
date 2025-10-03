@@ -190,3 +190,29 @@ Models: HuggingFace Transformers for NLP and Vision tasks."""
     
     def get_input_type(self):
         return self.input_type_var.get()
+    
+    def render_output(self, r): 
+        self.out.delete('1.0', tk.END)
+        
+        # Handle different types of output
+        if isinstance(r, dict) and 'image' in r:
+            # Display real AI image result
+            self.out.insert(tk.END, f"🤖 REAL AI IMAGE GENERATED! 🤖\n\n")
+            self.out.insert(tk.END, f"Model: {r.get('model', 'Unknown')}\n")
+            self.out.insert(tk.END, f"Prompt: {r.get('prompt', 'N/A')}\n")
+            self.out.insert(tk.END, f"Type: {r.get('type', 'Generated')}\n")
+            self.out.insert(tk.END, f"Status: REAL AI image created successfully!\n\n")
+            self.out.insert(tk.END, f"📁 Saved to: {r.get('image_path', 'N/A')}\n\n")
+            if 'image_path' in r:
+                self.out.insert(tk.END, f"👁️ To view: Click 'Open Images' button\n")
+                self.out.insert(tk.END, f"or open: {r['image_path']}")
+        elif isinstance(r, dict) and r.get('status') == 'error':
+            # Display error with helpful info
+            self.out.insert(tk.END, f"❌ ERROR: {r.get('message', 'Unknown error')}\n\n")
+            if 'diffusers' in str(r.get('message', '')):
+                self.out.insert(tk.END, "💡 Solution: Install missing dependencies:\n")
+                self.out.insert(tk.END, "pip install diffusers accelerate\n\n")
+                self.out.insert(tk.END, "This will enable REAL AI image generation!")
+        else:
+            # Display text result
+            self.out.insert(tk.END, str(r))
