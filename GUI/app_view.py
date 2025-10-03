@@ -21,7 +21,7 @@ class AppView(tk.Tk):
         # Create main interface
         self.create_interface()
         
-     def create_menu(self):
+    def create_menu(self):
         menubar = tk.Menu(self)
         self.config(menu=menubar)
         
