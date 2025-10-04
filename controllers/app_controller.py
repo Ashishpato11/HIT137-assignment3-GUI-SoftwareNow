@@ -32,10 +32,10 @@ class AppController(LoggingMixin, ConfigurableMixin):
         self.view.on_run_clicked(self.run_async)
         
         self._logger("Controller initialized with Text Sentiment, Image Classification, and Text-to-Image models")
-
-        def set_text_input(self, t):
+        
+    def set_text_input(self, t):
         self.val = t
-
+        
         @log_action()
         @timing_decorator
         @error_handler
@@ -66,8 +66,8 @@ class AppController(LoggingMixin, ConfigurableMixin):
         formatted_result = self.format_result(result, model_name)
         self.view.render_output(formatted_result)
         self._logger("Prediction completed successfully")
-         def _get_input_data(self, model_name):
-        """Get appropriate input data based on model type and user selection"""
+        def _get_input_data(self, model_name):
+         """Get appropriate input data based on model type and user selection"""
         input_type = self.view.get_input_type()
         
         if model_name == "Text-to-Image Generation" or input_type == "Text":
