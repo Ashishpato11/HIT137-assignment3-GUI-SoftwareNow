@@ -67,8 +67,8 @@ class AppController(LoggingMixin, ConfigurableMixin):
         self.view.render_output(formatted_result)
         self._logger("Prediction completed successfully")
     
-        def _get_input_data(self, model_name):
-         """Get appropriate input data based on model type and user selection"""
+    def _get_input_data(self, model_name):
+        """Get appropriate input data based on model type and user selection"""
         input_type = self.view.get_input_type()
         
         if model_name == "Text-to-Image Generation" or input_type == "Text":
