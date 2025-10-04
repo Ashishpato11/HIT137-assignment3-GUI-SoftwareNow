@@ -1,4 +1,4 @@
-from gui.app_view import AppView
+from GUI.app_view import AppView
 from controllers.app_controller import AppController
 
 def main(): 
