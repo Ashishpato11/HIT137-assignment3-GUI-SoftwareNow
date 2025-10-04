@@ -8,7 +8,7 @@ from models.text_to_image_fast import TextToImageAdapterFast as TextToImageAdapt
 
 class AppController(LoggingMixin, ConfigurableMixin):
     """Main application controller - demonstrates multiple inheritance"""
-
+    
     def __init__(self, view):
         # Initialize all parent classes properly
         LoggingMixin.__init__(self)
@@ -32,28 +32,28 @@ class AppController(LoggingMixin, ConfigurableMixin):
         self.view.on_run_clicked(self.run_async)
         
         self._logger("Controller initialized with Text Sentiment, Image Classification, and Text-to-Image models")
-        
+
     def set_text_input(self, t):
         self.val = t
-        
-        @log_action()
-        @timing_decorator
-        @error_handler
-        def run(self, model_name):
-            """Run the selected model - demonstrates polymorphism through different model types"""
-            self._logger(f"Running model: {model_name}")
 
+    @log_action()
+    @timing_decorator
+    @error_handler
+    def run(self, model_name):
+        """Run the selected model - demonstrates polymorphism through different model types"""
+        self._logger(f"Running model: {model_name}")
+        
         # Get the appropriate model - demonstrates polymorphism
         model = self.models.get(model_name)
         if not model:
             self.view.render_output(f"Error: Model '{model_name}' not found")
             return
         
-         # Load the model
+        # Load the model
         self._logger(f"Loading model: {model_name}")
         model.load()
         
-         # Get input based on model type and user selection
+        # Get input based on model type and user selection
         input_data = self._get_input_data(model_name)
         if not input_data:
             return
@@ -66,12 +66,13 @@ class AppController(LoggingMixin, ConfigurableMixin):
         formatted_result = self.format_result(result, model_name)
         self.view.render_output(formatted_result)
         self._logger("Prediction completed successfully")
+    
         def _get_input_data(self, model_name):
          """Get appropriate input data based on model type and user selection"""
         input_type = self.view.get_input_type()
         
         if model_name == "Text-to-Image Generation" or input_type == "Text":
-         # Use text input
+            # Use text input
             input_data = self.val if self.val else self.view.get_text_input()
             if not input_data or not input_data.strip():
                 self.view.render_output("Error: Please enter some text")
@@ -79,7 +80,7 @@ class AppController(LoggingMixin, ConfigurableMixin):
             return input_data
         
         elif input_type == "Image":
-          # Use file input
+            # Use file input
             input_data = self.view.get_selected_file()
             if not input_data or not os.path.exists(input_data):
                 self.view.render_output("Error: Please select a valid image file")
@@ -101,15 +102,16 @@ class AppController(LoggingMixin, ConfigurableMixin):
                 elif result['status'] == 'success' and 'image_path' in result:
                     # Handle image generation results and open folder
                     self._open_images_folder(result['image_path'])
-                    return f"Model: {model_name}\n\n SUCCESS: AI Image Generated!\n\n Saved to: {result['image_path']}\n\n Prompt: {result.get('prompt', 'N/A')}\n\n This is a REAL AI-generated robot chess image!\n\n The images folder has been opened for you to view the result."
+                    return f"Model: {model_name}\n\n✅ SUCCESS: AI Image Generated!\n\n📁 Saved to: {result['image_path']}\n\n🎯 Prompt: {result.get('prompt', 'N/A')}\n\n🤖 This is a REAL AI-generated robot chess image!\n\n📂 The images folder has been opened for you to view the result."
                 else:
                     return f"Model: {model_name}\n\nResult: {result.get('message', str(result))}"
         
         return f"Model: {model_name}\n\nResult:\n{str(result)}"
+
     def run_async(self, model_name):
         """Run prediction in a separate thread to prevent GUI freezing"""
         threading.Thread(target=self.run, args=(model_name,), daemon=True).start()
-
+    
     def _open_images_folder(self, image_path):
         """Open the folder containing the generated image"""
         try:
@@ -128,4 +130,3 @@ class AppController(LoggingMixin, ConfigurableMixin):
                 
         except Exception as e:
             self._logger(f"Could not open images folder: {e}")
-                  
